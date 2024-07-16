@@ -18,3 +18,9 @@ class PostMVS(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return super().get_queryset()
+
+        return Post.objects.filter(status=2)
